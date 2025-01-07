@@ -46,11 +46,16 @@ function Summery({ enabledNext }) {
     setLoading(false);
   };
 
+  const handleChange = (e) => {
+    setSummery(e.target.value);
+    enabledNext(false);
+  };
+
   return (
     <div>
       <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
-        <h2 className="font-bold text-lg">Personal Detail</h2>
-        <p>Add Summery for your job title</p>
+        <h2 className="font-bold text-lg">Summery</h2>
+        <p>Tell people more about you</p>
 
         <form className="mt-7" onSubmit={onSave}>
           <div className="flex justify-between items-end">
@@ -71,7 +76,7 @@ function Summery({ enabledNext }) {
             className="mt-5"
             required
             defaultValue={resumeInfo?.summery}
-            onChange={(e) => setSummery(e.target.value)}
+            onChange={handleChange}
           />
           <div className="mt-2 flex justify-end">
             <Button type="submit" disabled={loading}>

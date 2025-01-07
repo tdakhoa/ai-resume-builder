@@ -7,11 +7,20 @@ import GlobalAPI from "@service/GlobalAPI";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 
+const personalField = {
+  firstName: "",
+  lastName: "",
+  jobTitle: "",
+  address: "",
+  phone: "",
+  email: "",
+};
+
 function PersonalDetails({ enabledNext }) {
   const params = useParams();
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
 
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState(personalField);
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e) => {

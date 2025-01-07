@@ -1,6 +1,12 @@
 import React from "react";
 
 function EducationalPreview({ resumeInfo }) {
+  const formatDate = (date) => {
+    if (!date) return "";
+    const [year, month] = date.split("-");
+    return `${month}-${year}`;
+  };
+
   return (
     <div className="my-6">
       <h2
@@ -22,7 +28,8 @@ function EducationalPreview({ resumeInfo }) {
           <h2 className="text-xs flex justify-between">
             {education?.degree} in {education?.major}
             <span>
-              {education?.startDate} - {education?.endDate}
+              {formatDate(education?.startDate)} to{" "}
+              {formatDate(education?.endDate)}
             </span>
           </h2>
           <p className="text-xs my-2"> {education?.description}</p>

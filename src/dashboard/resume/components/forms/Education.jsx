@@ -17,7 +17,7 @@ const educationField = {
   description: "",
 };
 
-function Education() {
+function Education({ enabledNext }) {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [educationalList, setEducationList] = useState(
     resumeInfo?.education || [educationField]
@@ -34,10 +34,12 @@ function Education() {
 
   const AddNewEducation = (event, index) => {
     setEducationList([...educationalList, educationField]);
+    enabledNext(false);
   };
 
   const RemoveEducation = (event, index) => {
     setEducationList((educationalList) => educationalList.slice(0, -1));
+    enabledNext(false);
   };
 
   const onSave = () => {
@@ -52,6 +54,7 @@ function Education() {
       (resp) => {
         setLoading(false);
         toast("Details updated!");
+        enabledNext(true);
       },
       (error) => {
         setLoading(false);

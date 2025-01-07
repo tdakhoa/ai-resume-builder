@@ -8,7 +8,7 @@ import GlobalAPI from "@service/GlobalAPI";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
-const Skills = () => {
+const Skills = ({ enabledNext }) => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [skillsList, setSkillsList] = useState(
     resumeInfo?.skills || [
@@ -29,16 +29,25 @@ const Skills = () => {
         rating: 0,
       },
     ]);
+    enabledNext(false);
   };
 
   const RemoveSkill = () => {
-    setSkillsList((skillsList) => skillsList.splice(0, -1));
+    if (skillsList.length > 0) {
+      setSkillsList((prev) => prev.slice(0, -1));
+      enabledNext(false);
+    } else {
+      toast("No more skills to remove!");
+    }
   };
 
   const handleChange = (index, name, value) => {
-    const newEntries = skillsList.slice();
-    newEntries[index][name] = value;
-    setSkillsList(newEntries);
+    setSkillsList((prev) => {
+      const newEntries = [...prev];
+      newEntries[index] = { ...newEntries[index], [name]: value };
+      return newEntries;
+    });
+    enabledNext(false);
   };
 
   const onSave = () => {
@@ -52,6 +61,7 @@ const Skills = () => {
       (resp) => {
         setLoading(false);
         toast("Details updated!");
+        enabledNext(true);
       },
       (error) => {
         setLoading(false);
@@ -65,7 +75,7 @@ const Skills = () => {
       resumeInfo?.skills &&
       JSON.stringify(resumeInfo.skills) !== JSON.stringify(skillsList)
     ) {
-      setSkillsList(resumeInfo.skills);
+      setExperienceList(resumeInfo.skills);
     }
   }, [resumeInfo]);
 
@@ -77,6 +87,8 @@ const Skills = () => {
       }));
     }
   }, [skillsList, resumeInfo, setResumeInfo]);
+
+  if (skillsList?.length == 0) enabledNext(false);
 
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">

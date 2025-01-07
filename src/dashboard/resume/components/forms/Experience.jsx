@@ -18,7 +18,7 @@ const formField = {
   workSummery: "",
 };
 
-function Experience() {
+function Experience({ enabledNext }) {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [experienceList, setExperienceList] = useState(
     resumeInfo?.experience || [formField]
@@ -35,23 +35,38 @@ function Experience() {
     }
   }, [resumeInfo]);
 
+  useEffect(() => {
+    if (
+      JSON.stringify(resumeInfo?.experience) !== JSON.stringify(experienceList)
+    ) {
+      setResumeInfo((prev) => ({
+        ...prev,
+        experience: experienceList,
+      }));
+    }
+  }, [experienceList, resumeInfo, setResumeInfo]);
+
   const handleChange = (index, event) => {
     const { name, value } = event.target;
     setExperienceList((prev) =>
       prev.map((item, i) => (i === index ? { ...item, [name]: value } : item))
     );
+    enabledNext(false);
   };
 
   const AddNewExperience = () => {
     setExperienceList((prev) => [...prev, { ...formField }]);
+    enabledNext(false);
   };
   ``;
 
   const RemoveExperience = () => {
     setExperienceList((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev));
+    enabledNext(false);
   };
 
   const handleRichTextEditor = (value, name, index) => {
+    enabledNext(false);
     setExperienceList((prev) =>
       prev.map((item, i) => (i === index ? { ...item, [name]: value } : item))
     );
@@ -68,6 +83,7 @@ function Experience() {
     GlobalAPI.UpdateResumeDetail(resumeid, data).then(
       () => {
         setLoading(false);
+        enabledNext(true);
         toast("Details updated!");
       },
       () => {
@@ -77,17 +93,6 @@ function Experience() {
     );
   };
 
-  useEffect(() => {
-    if (
-      JSON.stringify(resumeInfo?.experience) !== JSON.stringify(experienceList)
-    ) {
-      setResumeInfo((prev) => ({
-        ...prev,
-        experience: experienceList,
-      }));
-    }
-  }, [experienceList, resumeInfo, setResumeInfo]);
-
   const changeMonthInput = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -95,6 +100,8 @@ function Experience() {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     return `${year}-${month}`;
   };
+
+  if (experienceList?.length == 0) enabledNext(false);
 
   return (
     <div>

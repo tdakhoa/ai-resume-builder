@@ -14,6 +14,11 @@ function FormSection() {
   const [enabledNext, setEnabledNext] = useState(false);
   const { resumeid } = useParams();
 
+  const handleBack = () => {
+    setActiveFormIndex(activeFormIndex - 1);
+    setEnabledNext(true);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -27,17 +32,14 @@ function FormSection() {
         </div>
         <div className="flex gap-2">
           {activeFormIndex > 1 && (
-            <Button
-              size="sm"
-              className=""
-              onClick={() => setActiveFormIndex(activeFormIndex - 1)}
-            >
+            <Button size="sm" disabled={!enabledNext} onClick={handleBack}>
               <ArrowLeft />
             </Button>
           )}
           <Button
             className="flex gap-2"
             size="sm"
+            disabled={!enabledNext}
             onClick={() => setActiveFormIndex(activeFormIndex + 1)}
           >
             Next <ArrowRight />
@@ -50,11 +52,11 @@ function FormSection() {
       ) : activeFormIndex == 2 ? (
         <Summery enabledNext={(v) => setEnabledNext(v)} />
       ) : activeFormIndex == 3 ? (
-        <Experience />
+        <Experience enabledNext={(v) => setEnabledNext(v)} />
       ) : activeFormIndex == 4 ? (
-        <Education />
+        <Education enabledNext={(v) => setEnabledNext(v)} />
       ) : activeFormIndex == 5 ? (
-        <Skills />
+        <Skills enabledNext={(v) => setEnabledNext(v)} />
       ) : activeFormIndex == 6 ? (
         <Navigate to={"/my-resume/" + resumeid + "/view"} />
       ) : null}

@@ -2,6 +2,12 @@ import React from "react";
 import DOMPurify from "dompurify";
 
 function ExperiencePreview({ resumeInfo }) {
+  const formatDate = (date) => {
+    if (!date) return "";
+    const [year, month] = date.split("-");
+    return `${month}-${year}`;
+  };
+
   return (
     <div className="my-6">
       <h2
@@ -23,8 +29,10 @@ function ExperiencePreview({ resumeInfo }) {
           <h2 className="text-xs flex justify-between">
             {experience?.companyName}, {experience?.city}, {experience?.state}{" "}
             <span>
-              {experience?.startDate} {"to "}
-              {experience?.currentlyWorking ? "Present" : experience?.endDate}
+              {formatDate(experience?.startDate)} {"to "}
+              {experience?.currentlyWorking
+                ? "Present"
+                : formatDate(experience?.endDate)}
             </span>
           </h2>
           <div
