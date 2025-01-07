@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid } from "lucide-react";
+import { LayoutGrid, Loader2Icon } from "lucide-react";
 import { ResumeInfoContext } from "@/context/ResumeInfoContext";
 import GlobalAPI from "@service/GlobalAPI";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
-function ThemeColor() {
+function ThemeColor({ setLoading }) {
   const colors = [
     "#FF5733",
     "#33FF57",
@@ -36,12 +36,15 @@ function ThemeColor() {
   ];
 
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
-  const [selectedColor, setSelectedColor] = useState();
+  const [selectedColor, setSelectedColor] = useState(
+    resumeInfo?.themeColor || ""
+  );
   const { resumeid } = useParams();
 
   const onColorSelect = (color) => {
     setSelectedColor(color);
     setResumeInfo({ ...resumeInfo, themeColor: color });
+    setLoading(true);
 
     const data = {
       data: {
@@ -49,9 +52,16 @@ function ThemeColor() {
       },
     };
 
-    GlobalAPI.UpdateResumeDetail(resumeid, data).then((resp) => {
-      toast("Theme color updated!");
-    });
+    GlobalAPI.UpdateResumeDetail(resumeid, data).then(
+      (resp) => {
+        setLoading(false);
+        toast("Theme color updated!");
+      },
+      (error) => {
+        setLoading(false);
+        toast("Error updating theme color. Please try again.");
+      }
+    );
   };
 
   return (
@@ -66,8 +76,9 @@ function ThemeColor() {
         <div className="grid grid-cols-5 gap-3">
           {colors.map((item, index) => (
             <div
+              key={index}
               className={`h-5 w-5 rounded-full cursor-pointer hover:border-black border ${
-                selectedColor == item && "border border-black"
+                selectedColor === item ? "border border-black" : ""
               }`}
               style={{ background: item }}
               onClick={() => onColorSelect(item)}

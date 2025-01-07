@@ -41,7 +41,7 @@ function EditResume() {
             loading ? "blur-sm" : ""
           }`}
         >
-          <FormSection />
+          <FormSection setLoading={setLoading} />
           <ResumePreview />
         </div>
       </div>

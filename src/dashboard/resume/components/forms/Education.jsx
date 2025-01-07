@@ -26,10 +26,14 @@ function Education({ enabledNext }) {
   const params = useParams();
 
   const handleChange = (event, index) => {
-    const newEntries = educationalList.slice();
     const { name, value } = event.target;
-    newEntries[index][name] = value;
-    setEducationList(newEntries);
+    const updatedEducationList = [...educationalList];
+    updatedEducationList[index] = {
+      ...updatedEducationList[index],
+      [name]: value,
+    };
+    setEducationList(updatedEducationList);
+    enabledNext(false);
   };
 
   const AddNewEducation = (event, index) => {
@@ -64,11 +68,12 @@ function Education({ enabledNext }) {
   };
 
   useEffect(() => {
-    if (
-      resumeInfo?.education &&
-      JSON.stringify(resumeInfo.education) !== JSON.stringify(educationalList)
-    ) {
-      setEducationList(resumeInfo.education);
+    if (resumeInfo?.education) {
+      if (
+        JSON.stringify(resumeInfo.education) !== JSON.stringify(educationalList)
+      ) {
+        setEducationList(resumeInfo.education);
+      }
     }
   }, [resumeInfo]);
 

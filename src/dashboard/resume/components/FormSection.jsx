@@ -9,7 +9,7 @@ import Skills from "./forms/Skills";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ThemeColor from "./ThemeColor";
 
-function FormSection() {
+function FormSection({ setLoading }) {
   const [activeFormIndex, setActiveFormIndex] = useState(1);
   const [enabledNext, setEnabledNext] = useState(false);
   const { resumeid } = useParams();
@@ -28,7 +28,7 @@ function FormSection() {
               <Home />
             </Button>
           </Link>
-          <ThemeColor />
+          <ThemeColor setLoading={setLoading} />
         </div>
         <div className="flex gap-2">
           {activeFormIndex > 1 && (

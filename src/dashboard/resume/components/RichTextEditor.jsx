@@ -70,7 +70,7 @@ function RichTextEditor({ onRichTextEditorChange, index, defaultValue }) {
   return (
     <div>
       <div className="flex justify-between my-2">
-        <label className="text-xs">Summery</label>
+        <label className="text-sm">Summery</label>
         <Button
           className="flex gap-2 border-primary text-primary"
           variant="outline"
@@ -89,6 +89,7 @@ function RichTextEditor({ onRichTextEditorChange, index, defaultValue }) {
       </div>
       <EditorProvider>
         <Editor
+          className="text-sm"
           value={value || ""}
           onChange={(e) => {
             setValue(e.target.value || "");

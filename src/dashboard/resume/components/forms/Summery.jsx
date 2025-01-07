@@ -87,13 +87,13 @@ function Summery({ enabledNext }) {
       </div>
 
       {aiGeneratedSummeryList && (
-        <div>
+        <div className="mt-5">
           <h2 className="font-bold text-lg">Suggestions</h2>
 
           {aiGeneratedSummeryList.map((item, index) => (
             <div key={index}>
               <h2 className="font-bold my-1">Level: {item?.ExperienceLevel}</h2>
-              <p>{item?.Summery}</p>
+              <p className="text-sm">{item?.Summery}</p>
             </div>
           ))}
         </div>
